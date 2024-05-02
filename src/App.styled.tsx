@@ -1,5 +1,35 @@
 import { styled } from "solid-styled-components";
 
-const SCApp = styled("div")``;
+const SCApp = styled("div")`
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+
+  --black: #141414;
+  --duration: 0.33s;
+  --dark-gray: #1f1f1f;
+  --gray: #333333;
+  --neon-green: #c4f82a;
+
+  .fs-title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+
+  .fs-body-bold,
+  .fs-body {
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  .fs-body-bold {
+    font-weight: 700;
+  }
+
+  .fs-body {
+    font-weight: 400;
+  }
+`;
 
 export default SCApp;
