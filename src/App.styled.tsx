@@ -1,15 +1,22 @@
 import { styled } from "solid-styled-components";
 
 const SCApp = styled("div")`
+  --duration: 0.33s;
+  --black: #141414;
+  --dark-gray: #1f1f1f;
+  --gray: #333333;
+  --neon-green: #c4f82a;
+
+  background: var(--black);
   display: grid;
   place-items: center;
   min-height: 100vh;
 
-  --black: #141414;
-  --duration: 0.33s;
-  --dark-gray: #1f1f1f;
-  --gray: #333333;
-  --neon-green: #c4f82a;
+  .fs-title,
+  .fs-body,
+  .fs-body-bold {
+    font-family: inter;
+  }
 
   .fs-title {
     font-size: 24px;

@@ -12,12 +12,12 @@ type Props = {
 export default function Socials(props: Props) {
   return (
     <SCSocials>
-      <img src={props.photo} alt={props.name} class="title" />
+      <img src={props.photo} alt={props.name} class="profile-picture" />
       <div class="title">
         <p class="fs-title">{props.name}</p>
         <p class="fs-body-bold">{props.location}</p>
       </div>
-      <p class="description fs-body">{props.description}</p>
+      <p class="description fs-body">"{props.description}"</p>
       <ul class="links">
         <For each={props.links}>
           {(link) => (
