@@ -11,7 +11,7 @@ type Props = {
 
 export default function Socials(props: Props) {
   return (
-    <SCSocials>
+    <SCSocials class="anime-expand">
       <img src={props.photo} alt={props.name} class="profile-picture" />
       <div class="title">
         <p class="fs-title">{props.name}</p>

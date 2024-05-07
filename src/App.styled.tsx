@@ -6,6 +6,8 @@ const SCApp = styled("div")`
   --dark-gray: #1f1f1f;
   --gray: #333333;
   --neon-green: #c4f82a;
+  --m-n: 1;
+  --m-delay: 0;
 
   background: var(--black);
   display: grid;
@@ -36,6 +38,52 @@ const SCApp = styled("div")`
 
   .fs-body {
     font-weight: 400;
+  }
+
+  .anime-appear {
+    animation: appean-anime calc(var(--n) * var(--duration)) forwards;
+    animation-delay: var(--delay, --m-delay);
+    @keyframes appear-anime {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  .anime-expand {
+    transform: scale(0.05, 0.05);
+    transform-origin: top center;
+
+    animation: expand-anime calc(var(--n, var(--m-n)) * var(--duration))
+      forwards;
+    animation-delay: var(--delay, var(--m-delay));
+
+    & > * {
+      opacity: 0;
+      animation: appear-anime calc(var(--n, var(--m-n)) * var(--duration))
+        forwards;
+      animation-delay: calc(
+        var(--delay, var(--m-delay)) + var(--n, var(--m-n)) * var(--duration)
+      );
+    }
+
+    @keyframes expand-anime {
+      from {
+        transform: scale(0.05, 0.05);
+      }
+
+      50% {
+        transform: scale(1, 0.05);
+      }
+
+      to {
+        transform: scale(1, 1);
+      }
+    }
   }
 `;
 

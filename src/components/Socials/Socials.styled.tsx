@@ -1,6 +1,8 @@
 import { styled } from "solid-styled-components";
 
 const SCSocials = styled("div")`
+  --n: 3;
+  --delay: calc(var(--n) * var(--duration));
   background: var(--dark-gray);
   color: white;
   display: flex;
