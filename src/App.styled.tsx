@@ -1,18 +1,21 @@
 import { styled } from "solid-styled-components";
 
 const SCApp = styled("div")`
-  --duration: 0.33s;
   --black: #141414;
   --dark-gray: #1f1f1f;
   --gray: #333333;
   --neon-green: #c4f82a;
-  --m-n: 1;
-  --m-delay: 0;
+  --n: 1;
+  --delay: 0;
+  --time-unit: 0.33s;
+  --x: 0;
+  --y: 0;
 
   background: var(--black);
   display: grid;
   place-items: center;
   min-height: 100vh;
+  overflow-x: hidden;
 
   .fs-title,
   .fs-body,
@@ -40,9 +43,26 @@ const SCApp = styled("div")`
     font-weight: 400;
   }
 
+  .anime-enter {
+    transform: translate(var(--x), var(--y));
+    animation: enter-anime var(--duration) forwards;
+    animation-delay: var(--delay);
+
+    @keyframes enter-anime {
+      from {
+        transform: translate(var(--x), var(--y));
+      }
+
+      to {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
   .anime-appear {
-    animation: appean-anime calc(var(--n) * var(--duration)) forwards;
-    animation-delay: var(--delay, --m-delay);
+    animation: appean-anime var(--duration) forwards;
+    animation-delay: var(--delay);
+
     @keyframes appear-anime {
       from {
         opacity: 0;
@@ -58,17 +78,13 @@ const SCApp = styled("div")`
     transform: scale(0.05, 0.05);
     transform-origin: top center;
 
-    animation: expand-anime calc(var(--n, var(--m-n)) * var(--duration))
-      forwards;
-    animation-delay: var(--delay, var(--m-delay));
+    animation: expand-anime var(--duration) forwards;
+    animation-delay: var(--delay);
 
     & > * {
       opacity: 0;
-      animation: appear-anime calc(var(--n, var(--m-n)) * var(--duration))
-        forwards;
-      animation-delay: calc(
-        var(--delay, var(--m-delay)) + var(--n, var(--m-n)) * var(--duration)
-      );
+      animation: appear-anime var(--duration) forwards;
+      animation-delay: calc(var(--delay) + var(--duration));
     }
 
     @keyframes expand-anime {

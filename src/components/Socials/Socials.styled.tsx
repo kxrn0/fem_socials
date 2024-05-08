@@ -2,7 +2,8 @@ import { styled } from "solid-styled-components";
 
 const SCSocials = styled("div")`
   --n: 3;
-  --delay: calc(var(--n) * var(--duration));
+  --delay: calc(var(--n) * var(--time-unit));
+  --duration: var(--delay);
   background: var(--dark-gray);
   color: white;
   display: flex;
@@ -13,12 +14,20 @@ const SCSocials = styled("div")`
   border-radius: 12px;
 
   .profile-picture {
+    --x: 0;
+    --y: -100px;
+    --delay: calc(2 * var(--duration));
+
     width: 88px;
     height: 88px;
     border-radius: 100%;
   }
 
   .title {
+    --x: 0;
+    --y: -200px;
+    --delay: calc(2 * var(--duration));
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +43,7 @@ const SCSocials = styled("div")`
     gap: 16px;
 
     .fs-body-bold {
+      --delay: calc(2 * var(--duration));
       background: var(--gray);
       color: white;
       text-transform: capitalize;
@@ -42,7 +52,7 @@ const SCSocials = styled("div")`
       width: 305px;
       padding: 12px;
       border-radius: 8px;
-      transition: background-color var(--duration), color var(--duration);
+      transition: background-color var(--time-unit), color var(--time-unit);
 
       @media (hover: hover) {
         &:hover {
