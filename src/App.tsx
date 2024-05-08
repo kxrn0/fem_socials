@@ -2,8 +2,11 @@ import SCApp from "./App.styled";
 import Socials from "./components/Socials/Socials";
 
 import photo from "./assets/images/pic.png";
+import Typewriter from "./components/Typewriter/Typewriter";
 
 function App() {
+  const strings = ["angular sucks", "install gentoo", "svelte", "solid jay es"];
+
   const data = {
     photo,
     name: "Mutation Observer",
@@ -23,6 +26,7 @@ function App() {
   return (
     <SCApp>
       <Socials {...data} />
+      <Typewriter words={strings} duration={100} />
     </SCApp>
   );
 }
