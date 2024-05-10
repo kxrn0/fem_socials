@@ -1,11 +1,12 @@
 import { For } from "solid-js";
 import SCSocials from "./Socials.styled.tsx";
+import Typewriter from "../Typewriter/Typewriter.tsx";
 
 type Props = {
   photo: string;
   name: string;
   location: string;
-  description: string;
+  description: string[];
   links: { name: string; href: string }[];
 };
 
@@ -25,7 +26,12 @@ export default function Socials(props: Props) {
           <p class="fs-body-bold">{props.location}</p>
         </div>
       </div>
-      <p class="description fs-body">"{props.description}"</p>
+      <Typewriter
+        words={props.description}
+        duration={150}
+        delay={4500}
+        pause={1000}
+      />
       <ul class="links">
         <For each={props.links}>
           {(link, index) => (

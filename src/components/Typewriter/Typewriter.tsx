@@ -1,63 +1,83 @@
+import { createStore } from "solid-js/store";
 import SCTypewriter from "./Typewriter.styled.tsx";
 import { For, createSignal, mergeProps, onCleanup, onMount } from "solid-js";
 
 type Props = {
   words: string[];
-  duration: number;
+  duration?: number;
   delay?: number;
-};
-
-type CurrentType = {
-  chars: string[];
-  string: string;
+  pause?: number;
 };
 
 export default function Typewriter(props: Props) {
-  const merged = mergeProps({ delay: 0 }, props);
-  const [seen, setSeen] = createSignal<string[]>([]);
-  const [current, setCurrent] = createSignal<CurrentType>({
-    chars: [],
-    string: "alhazred",
-  });
+  const merged = mergeProps({ delay: 0, duration: 100, pause: 0 }, props);
+  const [seen, setSeen] = createStore<string[]>([]);
+  const [current, setCurrent] = createStore({ chars: [""], string: "" });
   const [state, setState] = createSignal<"w" | "d">("w");
   const [animeId, setAnimeId] = createSignal(0);
 
   onMount(() => {
     let prevTime = 0;
-    setTimeout(() => anime, props.delay);
+
+    function select_word() {
+      if (seen.length === merged.words.length) setSeen([]);
+
+      let count;
+
+      count = 0;
+      while (count++ < 1e3) {
+        const index = ~~(Math.random() * merged.words.length);
+        const word = merged.words[index];
+
+        if (!seen.includes(word)) {
+          setSeen(seen.length, word);
+          setCurrent({ chars: [], string: word });
+
+          break;
+        }
+      }
+    }
 
     function anime(timestamp: number) {
       const dt = timestamp - prevTime;
 
-      if (dt >= props.duration!) {
+      if (dt >= merged.duration) {
         if (state() === "w") {
-          if (current().chars.length === current().string.length) {
-            setState("d");
-          } else {
-            setCurrent((prev) => ({
-              ...prev,
-              chars: [...prev.chars, prev.string[prev.chars.length]],
-            }));
+          if (current.chars.length === current.string.length) setState("d");
+          else {
+            const lastChar = current.string[current.chars.length];
+            const chars = [...current.chars, lastChar];
+
+            setCurrent("chars", chars);
           }
         } else {
-          if (!current().chars.length) {
+          if (!current.chars.length) {
             setState("w");
-            setCurrent({ chars: [], string: "string" });
+            select_word();
           } else {
-            setCurrent((prev) => ({
-              ...prev,
-              chars: prev.chars.slice(0, prev.chars.length - 1),
-            }));
+            const chars = current.chars.slice(0, current.chars.length - 1);
+
+            setCurrent("chars", chars);
           }
         }
 
         prevTime = timestamp;
+
+        if (state() === "d" && current.chars.length === current.string.length) {
+          prevTime += merged.pause;
+        }
       }
 
       setAnimeId(requestAnimationFrame(anime));
     }
 
-    setAnimeId(requestAnimationFrame(anime));
+    function init() {
+      select_word();
+
+      setAnimeId(requestAnimationFrame(anime));
+    }
+
+    setTimeout(init, merged.delay);
   });
 
   onCleanup(() => {
@@ -66,7 +86,10 @@ export default function Typewriter(props: Props) {
 
   return (
     <SCTypewriter>
-      "<For each={current().chars}>{(char) => <p class="pee">{char}</p>}</For>"
+      <For each={current.chars}>
+        {(char) => <pre class="fs-body">{char}</pre>}
+      </For>
+      <div class="cursor"></div>
     </SCTypewriter>
   );
 }

@@ -1,17 +1,14 @@
 import SCApp from "./App.styled";
 import Socials from "./components/Socials/Socials";
-
 import photo from "./assets/images/pic.png";
-import Typewriter from "./components/Typewriter/Typewriter";
+import Fireworks from "./components/Fireworks/Fireworks";
 
 function App() {
-  const strings = ["angular sucks", "install gentoo", "svelte", "solid jay es"];
-
   const data = {
     photo,
     name: "Mutation Observer",
     location: "Test String, UAE",
-    description: "Generative Artist",
+    description: ["one thing", "three more words", "more and more"],
     links: [
       { name: "github", href: "https://github.com/kxrn0" },
       { name: "twitter", href: "https://twitter.com/alhazred999" },
@@ -23,10 +20,11 @@ function App() {
       { name: "reddit", href: "https://ol.reddit.com/user/0x_by_me/" },
     ],
   };
+
   return (
     <SCApp>
       <Socials {...data} />
-      <Typewriter words={strings} duration={100} />
+      <Fireworks />
     </SCApp>
   );
 }

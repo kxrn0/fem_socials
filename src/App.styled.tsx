@@ -101,6 +101,16 @@ const SCApp = styled("div")`
       }
     }
   }
+
+  @keyframes blink {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 export default SCApp;
