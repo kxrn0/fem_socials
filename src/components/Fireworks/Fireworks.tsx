@@ -1,72 +1,117 @@
-import { mergeProps, onMount } from "solid-js";
-import Vector from "./Vector.ts";
-import Body from "./Body.ts";
+import { createSignal, mergeProps, onCleanup, onMount } from "solid-js";
+import Vector from "../../utilities/Vector.ts";
+import Body from "../../utilities/Body.ts";
 import SCFireworks from "./Fireworks.styled.tsx";
 import random from "../../utilities/random.ts";
 
 type Props = {
   width?: number;
   height?: number;
+  popDuration?: number;
+  popDelay?: number;
+  initialPosition?: Vector;
+  distance?: number;
 };
 
 export default function Fireworks(props: Props) {
-  const merged = mergeProps({ width: innerWidth, height: innerHeight }, props);
+  const merged = mergeProps(
+    {
+      width: innerWidth,
+      height: innerHeight,
+      popDuration: 0,
+      popDelay: 0,
+      initialPosition: new Vector(0, 0),
+      distance: 0,
+    },
+    props
+  );
+  const [animeId, setAnimeId] = createSignal(-1);
   let canvas!: HTMLCanvasElement;
 
   onMount(() => {
     const context = canvas.getContext("2d")!;
-    const gravity = new Vector(0, 1);
+    const gravity = new Vector(0, 0.25);
     let bodies: Body[] = [];
+    let prevTime: number, startTime: number;
 
-    function anime() {
+    function pop() {
+      const x = random(-merged.distance, merged.distance);
+      const y = random(-merged.distance, merged.distance);
+      const u = new Vector(x, y);
+      const position = Vector.add(u, merged.initialPosition);
+
+      for (let i = 0; i < 250; i++) {
+        const velocity = Vector.random_vector(random(1, 10));
+        const radius = random(1, 3);
+        const mass = (Math.PI * Math.pow(radius, 3) * 4) / 3;
+        const red = random(0, 255);
+        const green = random(0, 255);
+        const blue = random(0, 255);
+        const alpha = 1;
+        const fillStyle = { red, green, blue, alpha };
+        const body = new Body(
+          context,
+          position,
+          velocity,
+          radius,
+          mass,
+          fillStyle
+        );
+
+        bodies.push(body);
+      }
+    }
+
+    function anime(timestamp: number) {
       context.clearRect(0, 0, canvas.width, canvas.height);
+
+      const diff = Date.now() - startTime;
+
+      if (merged.popDuration > 0) {
+        if (diff <= merged.popDuration) {
+          const dt = timestamp - prevTime;
+
+          if (dt >= merged.popDelay) {
+            pop();
+
+            prevTime = timestamp;
+          }
+        }
+      }
 
       for (let body of bodies) {
         body.apply_force(gravity.clone().scale(body.mass));
         body.move();
         body.draw();
+        body.fillStyle.alpha = Math.max(0, body.fillStyle.alpha - 0.01);
       }
 
       bodies = bodies.filter(
-        (body) => body.position.y <= canvas.height + body.radius
+        (body) =>
+          body.position.y <= canvas.height + body.radius ||
+          body.fillStyle.alpha == 0
       );
 
-      requestAnimationFrame(anime);
+      if (merged.popDuration > 0 && diff > merged.popDuration && !bodies.length)
+        return;
+
+      setAnimeId(requestAnimationFrame(anime));
     }
 
     function init() {
       canvas.width = merged.width;
       canvas.height = merged.height;
 
-      canvas.addEventListener("click", (event) => {
-        for (let i = 0; i < 100; i++) {
-          const position = new Vector(event.clientX, event.clientY);
-          const randomV = random(10, 20);
-          const velocity = Vector.random_vector(randomV);
-          const radius = random(1, 5);
-          const mass = (Math.PI * Math.pow(radius, 3) * 4) / 3;
-          const fillStyle = `rgb(${random(0, 255)}, ${random(0, 255)}, ${random(
-            0,
-            255
-          )})`;
-          const body = new Body(
-            context!,
-            position,
-            velocity,
-            radius,
-            mass,
-            fillStyle
-          );
+      prevTime = 0;
+      startTime = Date.now();
 
-          bodies.push(body);
-        }
-      });
-
-      requestAnimationFrame(anime);
+      setAnimeId(requestAnimationFrame(anime));
     }
 
     init();
   });
+
+  onCleanup(() => cancelAnimationFrame(animeId()));
 
   return <SCFireworks ref={canvas}></SCFireworks>;
 }

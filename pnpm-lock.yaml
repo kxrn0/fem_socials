@@ -11,6 +11,9 @@ importers:
       reset-css:
         specifier: ^5.0.2
         version: 5.0.2
+      simplex-noise:
+        specifier: ^4.0.1
+        version: 4.0.1
       solid-js:
         specifier: ^1.8.15
         version: 1.8.17
@@ -537,6 +540,9 @@ packages:
   seroval@1.0.5:
     resolution: {integrity: sha512-TM+Z11tHHvQVQKeNlOUonOWnsNM+2IBwZ4vwoi4j3zKzIpc5IDw8WPwCfcc8F17wy6cBcJGbZbFOR0UCuTZHQA==}
     engines: {node: '>=10'}
+
+  simplex-noise@4.0.1:
+    resolution: {integrity: sha512-zl/+bdSqW7HJOQ0oDbxrNYaF4F5ik0i7M6YOYmEoIJNtg16NpvWaTTM1Y7oV/7T0jFljawLgYPS81Uu2rsfo1A==}
 
   solid-js@1.8.17:
     resolution: {integrity: sha512-E0FkUgv9sG/gEBWkHr/2XkBluHb1fkrHywUgA6o6XolPDCJ4g1HaLmQufcBBhiF36ee40q+HpG/vCZu7fLpI3Q==}
@@ -1082,6 +1088,8 @@ snapshots:
       seroval: 1.0.5
 
   seroval@1.0.5: {}
+
+  simplex-noise@4.0.1: {}
 
   solid-js@1.8.17:
     dependencies:

@@ -1,7 +1,8 @@
 import { styled } from "solid-styled-components";
 
 const SCFireworks = styled("canvas")`
-  position: absolute;
+  pointer-events: none;
+  position: fixed;
   inset: 0;
 `;
 

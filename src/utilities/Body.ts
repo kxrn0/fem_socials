@@ -1,5 +1,12 @@
 import Vector from "./Vector";
 
+type ColorType = {
+  red: number;
+  green: number;
+  blue: number;
+  alpha: number;
+};
+
 export default class Body {
   context: CanvasRenderingContext2D;
   position: Vector;
@@ -7,7 +14,7 @@ export default class Body {
   acceleration: Vector;
   radius: number;
   mass: number;
-  fillStyle: string;
+  fillStyle: ColorType;
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -15,11 +22,11 @@ export default class Body {
     velocity: Vector,
     radius: number,
     mass: number,
-    fillStyle: string
+    fillStyle: ColorType
   ) {
     this.context = context;
-    this.position = position;
-    this.velocity = velocity;
+    this.position = position.clone();
+    this.velocity = velocity.clone();
     this.radius = radius;
     this.mass = mass;
     this.fillStyle = fillStyle;
@@ -40,7 +47,7 @@ export default class Body {
 
   draw() {
     this.context.beginPath();
-    this.context.fillStyle = this.fillStyle;
+    this.context.fillStyle = `rgb(${this.fillStyle.red}, ${this.fillStyle.green}, ${this.fillStyle.blue}, ${this.fillStyle.alpha})`;
     this.context.arc(
       this.position.x,
       this.position.y,

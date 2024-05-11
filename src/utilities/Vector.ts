@@ -1,4 +1,4 @@
-import random from "../../utilities/random";
+import random from "./random";
 
 export default class Vector {
   x: number;
@@ -23,8 +23,18 @@ export default class Vector {
     return this;
   }
 
+  copy(other: Vector) {
+    this.x = other.x;
+    this.y = other.y;
+  }
+
   clone() {
     return new Vector(this.x, this.y);
+  }
+
+  set(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 
   static random_vector(size: number = 1) {
@@ -33,5 +43,9 @@ export default class Vector {
     const y = size * Math.sin(angle);
 
     return new Vector(x, y);
+  }
+
+  static add(u: Vector, v: Vector) {
+    return new Vector(u.x + v.x, u.y + v.y);
   }
 }
