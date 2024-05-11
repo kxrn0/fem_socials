@@ -9,7 +9,7 @@ function App() {
   const data = {
     photo,
     name: "Mutation Observer",
-    location: "Dallas, Texas",
+    location: "Dallas, USA",
     description: [
       '"Generative Artist"',
       '"Creative Coder"',
